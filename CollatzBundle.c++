@@ -13,6 +13,7 @@
 #include <sstream>  // istringstream
 #include <string>   // getline, string
 #include <utility>  // make_pair, pair
+#include <vector>
 
 
 
@@ -33,15 +34,13 @@ pair<int, int> collatz_read (const string& s) {
 // collatz_eval
 // ------------
 
-// The cycles cache
-static const int cycles_cache_size = 1000000;
-int cycles_cache[cycles_cache_size];
-
 int collatz_eval (int i, int j)
 {
   // Initialize variables
   int max_cycles = 0;
-  for (int k = 0; k < cycles_cache_size; ++k) cycles_cache[k] = 0;
+  
+  // Setup cycles cache
+  std::vector<int> cycles_cache (1000000, 0);
    
    // Tricky.  Make sure the inputs are ordered.
   if (i > j) std::swap(i, j);
@@ -54,7 +53,7 @@ int collatz_eval (int i, int j)
     while (val != 1) 
     {
       // If val is in the cache then use the cached value and break out of the loop
-	  if (val < cycles_cache_size && cycles_cache[val]) {
+	  if (val < cycles_cache.size() && cycles_cache[val]) {
         cycles += cycles_cache[val] - 1;
         break;
       }
