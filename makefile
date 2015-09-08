@@ -35,6 +35,7 @@ clean:
 	rm -f RunCollatz.tmp
 	rm -f TestCollatz
 	rm -f TestCollatz.tmp
+	rm -f CollatzBundle
 
 config:
 	git config -l
