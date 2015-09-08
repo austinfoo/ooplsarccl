@@ -15,7 +15,8 @@ FILES :=                              \
     RunCollatz.in                     \
     RunCollatz.out                    \
     TestCollatz.c++                   \
-    TestCollatz.out
+    TestCollatz.out                   \
+    ColalatzBundle.c++
 
 CXX        := g++
 CXXFLAGS   := -pedantic -std=c++11 -Wall -I$(INCDIRS)
@@ -37,6 +38,12 @@ clean:
 
 config:
 	git config -l
+
+bundle:
+	cat Collatz.c++ RunCollatz.c++ > tmp
+	sed -e "s/#include \"Collatz.h\"//g" tmp > CollatzBundle.c++
+	rm tmp
+	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) CollatzBundle.c++ -o CollatzBundle
 
 scrub:
 	make  clean
