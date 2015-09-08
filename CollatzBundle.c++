@@ -33,26 +33,48 @@ pair<int, int> collatz_read (const string& s) {
 // collatz_eval
 // ------------
 
-int collatz_eval (int i, int j) {
-  int max_cycles =  0;
+// The cycles cache
+static const int cycles_cache_size = 1000000;
+int cycles_cache[cycles_cache_size];
 
+int collatz_eval (int i, int j)
+{
+  // Initialize variables
+  int max_cycles = 0;
+  for (int k = 0; k < cycles_cache_size; ++k) cycles_cache[k] = 0;
+   
+   // Tricky.  Make sure the inputs are ordered.
   if (i > j) std::swap(i, j);
-
+  
+  // Loop through the input range
   for (int k = i; k <= j; ++k) {
-    int cur_cycles = 1;
+    int cycles = 1;
     int val = k;
-    while (val != 1) {
-      //std::cout << val << std::endl;
-      if ((val % 2) == 0) {
-	val = val / 2;
-      } else {
-	val = 3 * val + 1;
+      
+    while (val != 1) 
+    {
+      // If val is in the cache then use the cached value and break out of the loop
+	  if (val < cycles_cache_size && cycles_cache[val]) {
+        cycles += cycles_cache[val] - 1;
+        break;
       }
-      ++cur_cycles;
+      
+      // Compute one iteration of Collatz
+      if (val & 1) {
+	    val = 3 * val + 1;
+      } else {
+	    val = val / 2;
+      }
+      ++cycles;
     }
-    //std::cout << val << std::endl;
-    max_cycles = std::max (max_cycles, cur_cycles);
+    
+    // Save the number of cycles in the cache
+    cycles_cache[k] = cycles;
+    
+    // Save the cycles if it is the max we have seen so far
+    max_cycles = std::max (max_cycles, cycles);
   }
+  
   return max_cycles;
 }
 
