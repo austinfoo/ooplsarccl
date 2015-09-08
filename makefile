@@ -1,6 +1,25 @@
-CXX        := g++-4.8
-CXXFLAGS   := -pedantic -std=c++11 -Wall
-LDFLAGS    := -lgtest -lgtest_main -pthread
+INCDIRS:=/Users/dmielke/Documents/oopl/trees/googletest/googletest/include
+LIBDIRS:=/Users/dmielke/Documents/oopl/trees/googletest/googletest/make
+
+FILES :=                              \
+    .travis.yml                       \
+    collatz-tests/EID-RunCollatz.in   \
+    collatz-tests/EID-RunCollatz.out  \
+    collatz-tests/EID-TestCollatz.c++ \
+    collatz-tests/EID-TestCollatz.out \
+    Collatz.c++                       \
+    Collatz.h                         \
+    Collatz.log                       \
+    html                              \
+    RunCollatz.c++                    \
+    RunCollatz.in                     \
+    RunCollatz.out                    \
+    TestCollatz.c++                   \
+    TestCollatz.out
+
+CXX        := g++
+CXXFLAGS   := -pedantic -std=c++11 -Wall -I$(INCDIRS)
+LDFLAGS    := -lgtest -lgtest_main -pthread -L$(LIBDIRS)
 GCOV       := gcov-4.8
 GCOVFLAGS  := -fprofile-arcs -ftest-coverage
 GPROF      := gprof
