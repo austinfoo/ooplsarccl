@@ -52,7 +52,8 @@ status:
 	git remote -v
 	git status
 
-test: RunCollatz.tmp TestCollatz.tmp
+#test: RunCollatz.tmp TestCollatz.tmp
+test: RunCollatz.tmp
 
 RunCollatz: Collatz.h Collatz.c++ RunCollatz.c++
 	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) Collatz.c++ RunCollatz.c++ -o RunCollatz
