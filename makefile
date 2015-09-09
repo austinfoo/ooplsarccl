@@ -18,7 +18,11 @@ FILES :=                              \
     TestCollatz.out                   \
     ColalatzBundle.c++
 
-CXX        := g++
+ifeq ($(shell uname), Darwin)
+  CXX      := g++
+else
+  CXX      := g++-4.8
+endif
 CXXFLAGS   := -pedantic -std=c++11 -Wall -I$(INCDIRS)
 LDFLAGS    := -lgtest -lgtest_main -pthread -L$(LIBDIRS)
 GCOV       := gcov-4.8
