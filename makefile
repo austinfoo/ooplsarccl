@@ -20,12 +20,13 @@ FILES :=                              \
 
 ifeq ($(shell uname), Darwin)
   CXX      := g++
+  GCOV     := gcov
 else
   CXX      := g++-4.8
+  GCOV     := gcov-4.8
 endif
 CXXFLAGS   := -pedantic -std=c++11 -Wall -I$(INCDIRS)
 LDFLAGS    := -lgtest -lgtest_main -pthread -L$(LIBDIRS)
-GCOV       := gcov-4.8
 GCOVFLAGS  := -fprofile-arcs -ftest-coverage
 GPROF      := gprof
 GPROFFLAGS := -pg
@@ -64,8 +65,8 @@ status:
 	git remote -v
 	git status
 
-#test: RunCollatz.tmp TestCollatz.tmp
-test: RunCollatz.tmp
+test: RunCollatz.tmp TestCollatz.tmp
+#test: RunCollatz.tmp
 
 RunCollatz: Collatz.h Collatz.c++ RunCollatz.c++
 	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) Collatz.c++ RunCollatz.c++ -o RunCollatz
@@ -78,7 +79,7 @@ TestCollatz: Collatz.h Collatz.c++ TestCollatz.c++
 	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) Collatz.c++ TestCollatz.c++ -o TestCollatz $(LDFLAGS)
 
 TestCollatz.tmp: TestCollatz
-	$(VALGRIND) ./TestCollatz                                       >  TestCollatz.tmp 2>&1
+	#$(VALGRIND) ./TestCollatz                                       >  TestCollatz.tmp 2>&1
 	$(GCOV) -b Collatz.c++     | grep -A 5 "File 'Collatz.c++'"     >> TestCollatz.tmp
 	$(GCOV) -b TestCollatz.c++ | grep -A 5 "File 'TestCollatz.c++'" >> TestCollatz.tmp
 	cat TestCollatz.tmp
