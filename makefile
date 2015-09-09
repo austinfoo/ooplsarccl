@@ -18,19 +18,22 @@ FILES :=                              \
     TestCollatz.out                   \
     ColalatzBundle.c++
 
+# Call gcc and gcov differently on Darwin
 ifeq ($(shell uname), Darwin)
   CXX      := g++
   GCOV     := gcov
+  VALGRIND := echo Valgrind not available on Darwin
 else
   CXX      := g++-4.8
   GCOV     := gcov-4.8
+  VALGRIND := valgrind
 endif
+
 CXXFLAGS   := -pedantic -std=c++11 -Wall -I$(INCDIRS)
 LDFLAGS    := -lgtest -lgtest_main -pthread -L$(LIBDIRS)
 GCOVFLAGS  := -fprofile-arcs -ftest-coverage
 GPROF      := gprof
 GPROFFLAGS := -pg
-VALGRIND   := valgrind
 
 clean:
 	rm -f *.gcda
@@ -66,7 +69,6 @@ status:
 	git status
 
 test: RunCollatz.tmp TestCollatz.tmp
-#test: RunCollatz.tmp
 
 RunCollatz: Collatz.h Collatz.c++ RunCollatz.c++
 	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) Collatz.c++ RunCollatz.c++ -o RunCollatz
@@ -79,7 +81,8 @@ TestCollatz: Collatz.h Collatz.c++ TestCollatz.c++
 	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) Collatz.c++ TestCollatz.c++ -o TestCollatz $(LDFLAGS)
 
 TestCollatz.tmp: TestCollatz
-	#$(VALGRIND) ./TestCollatz                                       >  TestCollatz.tmp 2>&1
+	./TestCollatz                                                   >  TestCollatz.tmp 2>&1
+	$(VALGRIND) ./TestCollatz                                       >> TestCollatz.tmp
 	$(GCOV) -b Collatz.c++     | grep -A 5 "File 'Collatz.c++'"     >> TestCollatz.tmp
 	$(GCOV) -b TestCollatz.c++ | grep -A 5 "File 'TestCollatz.c++'" >> TestCollatz.tmp
 	cat TestCollatz.tmp

@@ -55,6 +55,14 @@ TEST(CollatzFixture, eval_4) {
     const int v = collatz_eval(900, 1000);
     ASSERT_EQ(174, v);}
 
+TEST(CollatzFixture, eval_5) {
+    const int v = collatz_eval(1000, 900);
+    ASSERT_EQ(174, v);}
+
+TEST(CollatzFixture, eval_6) {
+    const int v = collatz_eval(1, 1);
+    ASSERT_EQ(1, v);}
+
 // -----
 // print
 // -----
@@ -69,10 +77,10 @@ TEST(CollatzFixture, print) {
 // -----
 
 TEST(CollatzFixture, solve) {
-    istringstream r("1 10\n100 200\n201 210\n900 1000\n");
+    istringstream r("1 10\n100 200\n201 210\n900 1000\n 1000 900\n 1 1\n");
     ostringstream w;
     collatz_solve(r, w);
-    ASSERT_EQ("1 10 20\n100 200 125\n201 210 89\n900 1000 174\n", w.str());}
+    ASSERT_EQ("1 10 20\n100 200 125\n201 210 89\n900 1000 174\n1000 900 174\n1 1 1\n", w.str());}
 
 /*
 % g++ -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -Wall Collatz.c++ TestCollatz.c++ -o TestCollatz -lgtest -lgtest_main -lpthread
