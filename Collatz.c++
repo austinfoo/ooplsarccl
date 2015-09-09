@@ -53,7 +53,7 @@ int collatz_eval (int i, int j)
     while (val != 1) 
     {
       // If val is in the cache then use the cached value and break out of the loop
-	  if (val < cycles_cache.size() && cycles_cache[val]) {
+      if (val < static_cast<int>(cycles_cache.size()) && cycles_cache[val]) {
         cycles += cycles_cache[val] - 1;
         break;
       }
