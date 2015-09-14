@@ -49,9 +49,7 @@ config:
 	git config -l
 
 bundle:
-	cat Collatz.c++ RunCollatz.c++ > tmp
-	sed -e "s/#include \"Collatz.h\"//g" tmp > CollatzBundle.c++
-	rm tmp
+	cat Collatz.h Collatz.c++ RunCollatz.c++ | sed -e "s/#include \"Collatz.h\"//g" > CollatzBundle.c++
 	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) CollatzBundle.c++ -o CollatzBundle
 
 scrub:
