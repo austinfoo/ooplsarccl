@@ -1,3 +1,68 @@
+// --------------------------
+// projects/collatz/Collatz.h
+// Copyright (C) 2015
+// Glenn P. Downing
+// --------------------------
+
+#ifndef Collatz_h
+#define Collatz_h
+
+// --------
+// includes
+// --------
+
+#include <iostream> // istream, ostream
+#include <string>   // string
+#include <utility>  // pair
+
+using namespace std;
+
+// ------------
+// collatz_read
+// ------------
+
+/**
+ * read two ints
+ * @param s a string
+ * @return a pair of ints, representing the beginning and end of a range, [i, j]
+ */
+pair<int, int> collatz_read (const string& s);
+
+// ------------
+// collatz_eval
+// ------------
+
+/**
+ * @param i the beginning of the range, inclusive
+ * @param j the end       of the range, inclusive
+ * @return the max cycle length of the range [i, j]
+ */
+int collatz_eval (int i, int j);
+
+// -------------
+// collatz_print
+// -------------
+
+/**
+ * print three ints
+ * @param w an ostream
+ * @param i the beginning of the range, inclusive
+ * @param j the end       of the range, inclusive
+ * @param v the max cycle length
+ */
+void collatz_print (ostream& w, int i, int j, int v);
+
+// -------------
+// collatz_solve
+// -------------
+
+/**
+ * @param r an istream
+ * @param w an ostream
+ */
+void collatz_solve (istream& r, ostream& w);
+
+#endif // Collatz_h
 // ----------------------------
 // projects/collatz/Collatz.c++
 // Copyright (C) 2015
@@ -53,7 +118,7 @@ int collatz_eval (int i, int j)
     while (val != 1) 
     {
       // If val is in the cache then use the cached value and break out of the loop
-	  if (val < cycles_cache.size() && cycles_cache[val]) {
+      if (val < static_cast<int>(cycles_cache.size()) && cycles_cache[val]) {
         cycles += cycles_cache[val] - 1;
         break;
       }
